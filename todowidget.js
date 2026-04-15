@@ -191,7 +191,7 @@
     }
 
     // Instantiate Single Instance
-    //new TodoWidget();
+    new TodoWidget();
     //refactored for testing
     if (typeof module !== "undefined") {
     module.exports = TodoWidget;
