@@ -1,28 +1,19 @@
-fetch("https://api.api-ninjas.com/v1/population?country=New Zealand", {
-    headers: {
-        "X-Api-Key": "fGlYFBMaBzr4RpZmPA6HxsFOlW4BpqEtIpjji6ey"
-    }
-})
-.then(res => res.json())
-.then(data => console.log(data));
- 
-
 class PopulationChart {
-    
-
-    //////////////////////////
-    //Constructor: Used for initializing the data option and country for the widget along with its methods
-    //////////////////////////
+    // ----------------------
+    //Constructor: Used for initializing the data along with its methods
+    // ----------------------
     constructor() {
         this.apiKey = "fGlYFBMaBzr4RpZmPA6HxsFOlW4BpqEtIpjji6ey";
         this.myChart = null;
         
-
         this.createContainer();
         this.render();
         this.attachEvents();
     }
 
+    // -------------------------
+    // This Method is used to create the Main Container for the Widget
+    // -------------------------
     createContainer() {
         this.container = document.createElement("div");
         this.container.id = "population-widget-container";
@@ -31,18 +22,51 @@ class PopulationChart {
         this.injectStyles();
     }
 
+    // -------------------------
+    // This method is used to inject a stylesheet for the widget (Once)
+    // -------------------------
     injectStyles() {
         if (document.getElementById("population-widget-styles")) return;
 
         const style = document.createElement("style");
-        style.id = "todo-widget-styles";
+        style.id = "population-widget-styles";
         style.textContent = `
+
+            #population-widget-container {
+                    font-family: Arial, sans-serif;
+                    max-width: 320px;
+                    border: 1px solid #ccc;
+                    padding: 15px;
+                    border-radius: 8px;
+                    background: #f9f9f9;
+                    display: inline-block;
+                }
             
+            .data-type {
+                padding: ;
+            }
+
+            .close {
+                padding: 6px 8px;
+                margin: auto;
+                align-items: center;
+                display: flex;
+                justify-content: center;
+                background: #FA003F;
+            }
+
+            .close:hover {
+                background: #FF0000;
+                cursor: pointer;
+            }
         `;
         
         document.head.appendChild(style);
         }
 
+    // -------------------------
+    // This method is used to render the Widget's HTML
+    // -------------------------
     render() {
         this.container.innerHTML = `
             <h3>Population Chart</h3>
@@ -81,12 +105,20 @@ class PopulationChart {
         this.ctx = this.container.querySelector("#myChart");
     }
 
+
+    // -------------------------
+    // This method is used to render the chart based on the data type, country and chart type
+    // -------------------------
+
     renderGraph() {
-        //This is needed to destroy the previous chartbefore creating a new one
+        this.chart = this.chartDropbox.value;
+
+        //This is needed to destroy the previous chart before creating a new one
         if(this.myChart) {
             this.myChart.destroy();
         }
 
+        //This part creates the chart based on the information given
         this.myChart = new Chart(this.ctx, {
         type: this.chart,
         data: {
@@ -109,8 +141,10 @@ class PopulationChart {
         )
     }
 
+    // -------------------------
+    // This method is used to fetch the given data from the api
+    // -------------------------
     addGraph() {
-        console.log("dsad");
         this.data = this.dataDropbox.value;
         this.country = this.countryDropbox.value;
         this.chart = this.chartDropbox.value;
@@ -118,7 +152,6 @@ class PopulationChart {
         if(!this.data || !this.country || !this.chart) return;
 
         const url = "https://api.api-ninjas.com/v1/population?country=" + this.country;
-        console.log(url);
         fetch(url , {
             headers: {
                 "X-Api-Key": this.apiKey
@@ -133,16 +166,20 @@ class PopulationChart {
                 this.years.push(item.year);
                 this.values.push(item[this.data]);
             });
+
             this.renderGraph();
         })
     
             
     }
 
+    // -------------------------
+    // This method is used to attach event listeners to the dropdowns and the close button
+    // -------------------------
     attachEvents() {
         this.dataDropbox.addEventListener("change", () => this.addGraph());
         this.countryDropbox.addEventListener("change", () => this.addGraph());
-        this.chartDropbox.addEventListener("change", () => this.addGraph());
+        this.chartDropbox.addEventListener("change", () => this.renderGraph());
         this.closeButton.addEventListener("click", () => this.closeWidget());
     }
 

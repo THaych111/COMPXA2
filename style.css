@@ -1,3 +1,45 @@
 body {
-    background-color: aqua;
+    background-color: #d3d3d3;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    color: black;
+}
+
+p {
+    display: inline-block;
+    text-align: center;
+    color: black;
+}
+
+/*
+    This section is to style the area around the add widget button and the text
+*/
+.widget-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+    background-color: white;
+}
+
+/*
+    This section is to style the add widget button. 
+    This gives the button a rounded green look that when hovering, turns the cursor into a pointer
+    lights up the button
+*/
+.add-widget{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: #4CAF50;
+}
+
+.add-widget:hover {
+    background-color: #7abd73;
+    cursor: pointer;
 }
